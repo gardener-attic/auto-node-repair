@@ -1,6 +1,6 @@
-Auto-node-repair.   
-Copyright 2017 The Gardener Authors.   
-[Apache 2 license](./LICENSE.md).
+## Auto-node-repair.   
+Copyright (c) 2017-2018 SAP SE or an SAP affiliate company. All rights reserved.     
+[Apache 2 license](./LICENSE.md ).
 
 # Credits
 Auto-node-repair is built upon by modifying source code cloned from cluster-autorepair which is a
