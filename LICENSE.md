@@ -1,3 +1,4 @@
+```
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -199,3 +200,106 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+```
+## APIs
+
+This project may include APIs to SAP or third party products or services. The use of these APIs, products and services may be subject to additional agreements. In no event shall the application of the Apache Software License, v.2 to this project grant any rights in or to these APIs, products or services that would alter, expand, be inconsistent with, or supersede any terms of these additional agreements. API means application programming interfaces, as well as their respective specifications and implementing code that allows other software products to communicate with or call on SAP or third party products or services (for example, SAP Enterprise Services, BAPIs, Idocs, RFCs and ABAP calls or other user exits) and may be made available through SAP or third party products, SDKs, documentation or other media.
+
+## Subcomponents
+
+This project includes the following subcomponents that are subject to separate license terms. 
+Your use of these subcomponents is subject to the separate license terms applicable to
+each subcomponent.
+
+AWS SDK Go.   
+https://github.com/aws/aws-sdk-go.   
+Copyright 2017 Amazon.com, Inc. or its affiliates.   
+Apache 2 license (https://github.com/aws/aws-sdk-go/blob/master/LICENSE.txt)
+
+Glog.   
+https://github.com/golang/glog.   
+Copyright 2013 Google Inc. All Rights Reserved.   
+Apache 2 license (https://github.com/golang/glog/blob/master/LICENSE).
+
+Pflag.   
+https://github.com/spf13/pflag.   
+Copyright (c) 2012 Alex Ogier. Copyright (c) 2012 The Go Authors.   
+BSD 3-clause "New" or "Revised" License (https://github.com/spf13/pflag/blob/master/LICENSE).
+
+Testify.   
+used in auto-node-repair tests   
+https://github.com/stretchr/testify   
+Copyright (c) 2012 - 2013 Mat Ryer and Tyler Bunnell   
+MIT License - testify variant (https://github.com/stretchr/testify/blob/master/LICENSE).
+
+Gccfg.   
+https://github.com/go-gcfg/gcfg.   
+Copyright 2009 The Go Authors.   
+BSD 3-clause "New" or "Revised" License (https://github.com/go-gcfg/gcfg/blob/v1/LICENSE).
+
+API.   
+https://git.k8s.io/api.   
+Copyright 2017 The Kubernetes Authors.   
+Apache 2 license (https://git.k8s.io/api/LICENSE).
+
+APIMachinery.   
+https://git.k8s.io/apimachinery.   
+Copyright 2017 The Kubernetes Authors.   
+Apache 2 license (https://git.k8s.io/apimachinery/LICENSE).
+
+APIServer.   
+https://git.k8s.io/apiserver.   
+Copyright 2017 The Kubernetes Authors.   
+Apache 2 license (https://git.k8s.io/apiserver/LICENSE).
+
+Client-Go.   
+https://git.k8s.io/client-go.   
+Copyright 2017 The Kubernetes Authors.   
+Apache 2 license (https://git.k8s.io/client-go/LICENSE).
+
+Kubernetes.   
+https://git.k8s.io/kubernetes.   
+Copyright 2017 The Kubernetes Authors.   
+Apache 2 license (https://git.k8s.io/kubernetes/LICENSE).
+
+Docker distribution.   
+https://github.com/docker/distribution.   
+Apache 2 license (https://github.com/docker/distribution/blob/master/LICENSE).
+
+------
+## BSD 3-Clause "New" or "Revised" License
+
+    Copyright (c) <year> <owner>. All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+    3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+------
+## MIT License - testify variant
+
+    Copyright (c) <year> <owner>
+
+    Please consider promoting this project if you find it useful.
+
+    Permission is hereby granted, free of charge, to any person 
+    obtaining a copy of this software and associated documentation 
+    files (the "Software"), to deal in the Software without restriction, 
+    including without limitation the rights to use, copy, modify, merge, 
+    publish, distribute, sublicense, and/or sell copies of the Software, 
+    and to permit persons to whom the Software is furnished to do so, 
+    subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT 
+    OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
+    OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
