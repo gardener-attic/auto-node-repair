@@ -1,0 +1,34 @@
+auto-node-repair:
+  template: 'default'
+  base_definition:
+    repo: ~
+    traits:
+      version:
+        preprocess:
+          'inject-commit-hash'
+        inject_effective_version: true
+      publish:
+        dockerimages:
+          auto-node-repair:
+            inputs:
+              repos:
+                source: ~ # default
+              steps:
+                build: ~
+            registry: 'gcr-readwrite'
+            image: 'eu.gcr.io/gardener-project/gardener/auto-node-repair'
+    steps:
+      build:
+        image: 'golang:1.9.4'
+        output_dir: 'binary'
+  variants:
+    head-update: ~
+    pull-request:
+      traits:
+        pull-request: ~
+    release:
+      traits:
+        version:
+          preprocess: 'finalise'
+        release:
+          nextversion: 'bump_minor'
