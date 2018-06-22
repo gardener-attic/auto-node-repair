@@ -24,11 +24,11 @@ import (
 	"regexp"
 	"strings"
 
-	apiv1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	"github.com/gardener/auto-node-repair/cloudprovider"
 	"github.com/gardener/auto-node-repair/config/dynamic"
 	"github.com/gardener/auto-node-repair/utils/errors"
+	apiv1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
 )
 
@@ -39,17 +39,11 @@ type awsCloudProvider struct {
 }
 
 // BuildAwsCloudProvider builds CloudProvider implementation for AWS.
-func BuildAwsCloudProvider(awsManager *AwsManager, discoveryOpts cloudprovider.NodeGroupDiscoveryOptions) (cloudprovider.CloudProvider, error) {
-	if err := discoveryOpts.Validate(); err != nil {
-		return nil, fmt.Errorf("Failed to build an aws cloud provider: %v", err)
+func BuildAwsCloudProvider(awsManager *AwsManager) (cloudprovider.CloudProvider, error) {
+	aws := &awsCloudProvider{
+		awsManager: awsManager,
 	}
-	if discoveryOpts.StaticDiscoverySpecified() {
-		return buildStaticallyDiscoveringProvider(awsManager, discoveryOpts.NodeGroupSpecs)
-	}
-	if discoveryOpts.AutoDiscoverySpecified() {
-		return buildAutoDiscoveringProvider(awsManager, discoveryOpts.NodeGroupAutoDiscoverySpec)
-	}
-	return nil, fmt.Errorf("Failed to build an aws cloud provider: Either node group specs or node group auto discovery spec must be specified")
+	return aws, nil
 }
 
 func buildAutoDiscoveringProvider(awsManager *AwsManager, spec string) (*awsCloudProvider, error) {
@@ -310,8 +304,8 @@ func (asg *Asg) DeleteNodes(nodes []*apiv1.Node) error {
 	}
 
 	if int(size) <= asg.MinSize() {
- 		return asg.awsManager.RestartInstances(refs)
- 	}
+		return asg.awsManager.RestartInstances(refs)
+	}
 
 	return asg.awsManager.DeleteInstances(refs)
 }

@@ -29,12 +29,12 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/autoscaling"
+	"github.com/gardener/auto-node-repair/cloudprovider"
 	"github.com/golang/glog"
 	"gopkg.in/gcfg.v1"
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"github.com/gardener/auto-node-repair/cloudprovider"
 	provider_aws "k8s.io/kubernetes/pkg/cloudprovider/providers/aws"
 	kubeletapis "k8s.io/kubernetes/pkg/kubelet/apis"
 )
@@ -298,34 +298,34 @@ func extractTaintsFromAsg(tags []*autoscaling.TagDescription) []apiv1.Taint {
 // When desiredCapacity hits MinSize, awsmanager does not allow to delete the VM. RestartInstance should delete
 // the instance anyhow and let ASG recreate it.
 func (m *AwsManager) RestartInstances(instances []*AwsRef) error {
- 	if len(instances) == 0 {
- 		return nil
- 	}
- 	commonAsg, err := m.asgs.FindForInstance(instances[0])
- 	if err != nil {
- 		return err
- 	}
- 	for _, instance := range instances {
- 		asg, err := m.asgs.FindForInstance(instance)
- 		if err != nil {
- 			return err
- 		}
- 		if asg != commonAsg {
- 			return fmt.Errorf("Connot delete instances which don't belong to the same ASG.")
- 		}
- 	}
- 
- 	for _, instance := range instances {
- 		params := &autoscaling.TerminateInstanceInAutoScalingGroupInput{
- 			InstanceId:                     aws.String(instance.Name),
- 			ShouldDecrementDesiredCapacity: aws.Bool(false),
- 		}
- 		resp, err := m.service.TerminateInstanceInAutoScalingGroup(params)
- 		if err != nil {
- 			return err
- 		}
- 		glog.V(4).Infof(*resp.Activity.Description)
- 	}
- 
- 	return nil
+	if len(instances) == 0 {
+		return nil
+	}
+	commonAsg, err := m.asgs.FindForInstance(instances[0])
+	if err != nil {
+		return err
+	}
+	for _, instance := range instances {
+		asg, err := m.asgs.FindForInstance(instance)
+		if err != nil {
+			return err
+		}
+		if asg != commonAsg {
+			return fmt.Errorf("Connot delete instances which don't belong to the same ASG.")
+		}
+	}
+
+	for _, instance := range instances {
+		params := &autoscaling.TerminateInstanceInAutoScalingGroupInput{
+			InstanceId:                     aws.String(instance.Name),
+			ShouldDecrementDesiredCapacity: aws.Bool(false),
+		}
+		resp, err := m.service.TerminateInstanceInAutoScalingGroup(params)
+		if err != nil {
+			return err
+		}
+		glog.V(4).Infof(*resp.Activity.Description)
+	}
+
+	return nil
 }

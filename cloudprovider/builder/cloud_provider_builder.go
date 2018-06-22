@@ -20,15 +20,17 @@ https://github.com/kubernetes/autoscaler/blob/cluster-autorepair-1.0.0/cluster-a
 package builder
 
 import (
+	"io"
 	"os"
 
 	"github.com/gardener/auto-node-repair/cloudprovider"
 	"github.com/gardener/auto-node-repair/cloudprovider/aws"
-	
+	"github.com/gardener/auto-node-repair/cloudprovider/azure"
+
 	"github.com/golang/glog"
 )
 
-// CloudProviderBuilder builds a cloud provider from all the necessary parameters including the name of a cloud provider e.g. aws, gce
+// CloudProviderBuilder builds a cloud provider from all the necessary parameters including the name of a cloud provider e.g. aws, gce, azure
 // and the path to a config file
 type CloudProviderBuilder struct {
 	cloudProviderFlag string
@@ -46,11 +48,12 @@ func NewCloudProviderBuilder(cloudProviderFlag string, cloudConfig string, clust
 }
 
 // Build a cloud provider from static settings contained in the builder and dynamic settings passed via args
-func (b CloudProviderBuilder) Build(discoveryOpts cloudprovider.NodeGroupDiscoveryOptions) cloudprovider.CloudProvider {
+func (b CloudProviderBuilder) Build(discoveryOpts cloudprovider.NodeGroupDiscoveryOptions, resourceLimiter *cloudprovider.ResourceLimiter) cloudprovider.CloudProvider {
 	var err error
 	var cloudProvider cloudprovider.CloudProvider
 
-	if b.cloudProviderFlag == "aws" {
+	switch b.cloudProviderFlag {
+	case "aws":
 		var awsManager *aws.AwsManager
 		var awsError error
 		if b.cloudConfig != "" {
@@ -66,11 +69,37 @@ func (b CloudProviderBuilder) Build(discoveryOpts cloudprovider.NodeGroupDiscove
 		if awsError != nil {
 			glog.Fatalf("Failed to create AWS Manager: %v", err)
 		}
-		cloudProvider, err = aws.BuildAwsCloudProvider(awsManager, discoveryOpts)
+		cloudProvider, err = aws.BuildAwsCloudProvider(awsManager)
 		if err != nil {
 			glog.Fatalf("Failed to create AWS cloud provider: %v", err)
 		}
+	case "azure":
+		return b.buildAzure(discoveryOpts, resourceLimiter)
 	}
 
 	return cloudProvider
+}
+
+func (b CloudProviderBuilder) buildAzure(do cloudprovider.NodeGroupDiscoveryOptions, rl *cloudprovider.ResourceLimiter) cloudprovider.CloudProvider {
+	var config io.ReadCloser
+	if b.cloudConfig != "" {
+		glog.Info("Creating Azure Manager using cloud-config file: %v", b.cloudConfig)
+		var err error
+		config, err := os.Open(b.cloudConfig)
+		if err != nil {
+			glog.Fatalf("Couldn't open cloud provider configuration %s: %#v", b.cloudConfig, err)
+		}
+		defer config.Close()
+	} else {
+		glog.Info("Creating Azure Manager with default configuration.")
+	}
+	manager, err := azure.CreateAzureManager(config, do)
+	if err != nil {
+		glog.Fatalf("Failed to create Azure Manager: %v", err)
+	}
+	provider, err := azure.BuildAzureCloudProvider(manager, rl)
+	if err != nil {
+		glog.Fatalf("Failed to create Azure cloud provider: %v", err)
+	}
+	return provider
 }

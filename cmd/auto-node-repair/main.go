@@ -34,11 +34,11 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	"k8s.io/kubernetes/pkg/apis/componentconfig"
-	
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	kube_client "k8s.io/client-go/kubernetes"
-	kube_flag "k8s.io/apiserver/pkg/util/flag"
+
 	kube_util "github.com/gardener/auto-node-repair/utils/kubernetes"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	kube_flag "k8s.io/apiserver/pkg/util/flag"
+	kube_client "k8s.io/client-go/kubernetes"
 	kube_leaderelection "k8s.io/client-go/tools/leaderelection"
 )
 
@@ -58,7 +58,7 @@ func (flag *MultiStringFlag) Set(value string) error {
 
 const (
 	defaultStartupDelay  = 10 * time.Minute
-	defaultPollDelay	 = 10 * time.Second
+	defaultPollDelay     = 10 * time.Second
 	defaultLeaseDuration = 15 * time.Second
 	defaultRenewDeadline = 10 * time.Second
 	defaultRetryPeriod   = 2 * time.Second
@@ -66,30 +66,30 @@ const (
 )
 
 var (
-	nodeGroupsFlag         MultiStringFlag
-	clusterName            = flag.String("clusterName", "", "Autorepairable cluster name, if available")
-	address                = flag.String("address", ":8085", "The address to expose prometheus metrics.")
-	kubernetes             = flag.String("kubernetes", "", "Kubernetes master location. Leave blank for default")
-	kubeConfigFile         = flag.String("kubeconfig", "", "Path to kubeconfig file with authorization and master location information.")
-	cloudConfig            = flag.String("cloud-config", "", "The path to the cloud provider configuration file.  Empty string for no configuration file.")
-	namespace              = flag.String("namespace", "kube-system", "Namespace in which auto-node-repair run. If a --configmap flag is also provided, ensure that the configmap exists in this namespace before CA runs.")
-	scanInterval           = flag.Duration("scan-interval", defaultPollDelay, "How often cluster is reevaluated for scale up or down")
-	cloudProviderFlag      = flag.String("cloud-provider", "gce", "Cloud provider type. Allowed values: gce, aws, kubemark")
-	repairPeriod           = flag.Duration("repair-period", defaultRepairPeriod, "How long controller should wait before attempting to repair unhealthy nodes")
-	startUpDelay           = flag.Duration("initial-delay", defaultStartupDelay, "How long controller should wait while first boot up")
+	nodeGroupsFlag    MultiStringFlag
+	clusterName       = flag.String("clusterName", "", "Autorepairable cluster name, if available")
+	address           = flag.String("address", ":8085", "The address to expose prometheus metrics.")
+	kubernetes        = flag.String("kubernetes", "", "Kubernetes master location. Leave blank for default")
+	kubeConfigFile    = flag.String("kubeconfig", "", "Path to kubeconfig file with authorization and master location information.")
+	cloudConfig       = flag.String("cloud-config", "", "The path to the cloud provider configuration file.  Empty string for no configuration file.")
+	namespace         = flag.String("namespace", "kube-system", "Namespace in which auto-node-repair run. If a --configmap flag is also provided, ensure that the configmap exists in this namespace before CA runs.")
+	scanInterval      = flag.Duration("scan-interval", defaultPollDelay, "How often cluster is reevaluated for scale up or down")
+	cloudProviderFlag = flag.String("cloud-provider", "", "Cloud provider type. Allowed values: aws, azure")
+	repairPeriod      = flag.Duration("repair-period", defaultRepairPeriod, "How long controller should wait before attempting to repair unhealthy nodes")
+	startUpDelay      = flag.Duration("initial-delay", defaultStartupDelay, "How long controller should wait while first boot up")
 )
 
 func createAutorepairOptions() core.AutorepairOptions {
 	autorepairingOpts := core.AutorepairingOptions{
-		CloudConfig:                      *cloudConfig,
-		CloudProviderName:                *cloudProviderFlag,
-		NodeGroups:                       nodeGroupsFlag,
-		ConfigNamespace:                  *namespace,
-		ClusterName:                      *clusterName,
+		CloudConfig:       *cloudConfig,
+		CloudProviderName: *cloudProviderFlag,
+		NodeGroups:        nodeGroupsFlag,
+		ConfigNamespace:   *namespace,
+		ClusterName:       *clusterName,
 	}
 
 	return core.AutorepairOptions{
-		AutorepairingOptions:   autorepairingOpts,
+		AutorepairingOptions: autorepairingOpts,
 	}
 }
 
@@ -120,17 +120,17 @@ func createKubeClient() kube_client.Interface {
 	return kube_client.NewForConfigOrDie(kubeConfig)
 }
 
-func run() {	
+func run() {
 	glog.Infof("Auto-Node-Repair: Waiting %v for nodes to be ready", *startUpDelay)
- 	time.Sleep(*startUpDelay)
-	
+	time.Sleep(*startUpDelay)
+
 	kubeClient := createKubeClient()
 	kubeEventRecorder := kube_util.CreateEventRecorder(kubeClient)
-	opts := createAutorepairOptions() 
+	opts := createAutorepairOptions()
 
 	listerRegistryStopChannel := make(chan struct{})
 	listerRegistry := kube_util.NewListerRegistryWithDefaultListers(kubeClient, listerRegistryStopChannel)
-	autorepair, err := core.NewAutorepair(opts, kubeClient, kubeEventRecorder, listerRegistry) 
+	autorepair, err := core.NewAutorepair(opts, kubeClient, kubeEventRecorder, listerRegistry)
 	if err != nil {
 		glog.Fatalf("Failed to create auto repair: %v", err)
 	}
@@ -141,7 +141,7 @@ func run() {
 		select {
 		case <-time.After(*scanInterval):
 			{
-				err = autorepair.RunOnce(*repairPeriod) 
+				err = autorepair.RunOnce(*repairPeriod)
 				if err != nil {
 					glog.Fatalf("Failed to run autorepair : %v", err)
 				}
@@ -153,7 +153,7 @@ func run() {
 func main() {
 	leaderElection := defaultLeaderElectionConfiguration()
 	leaderElection.LeaderElect = false
-	
+
 	bindFlags(&leaderElection, pflag.CommandLine)
 	flag.Var(&nodeGroupsFlag, "nodes", "sets min,max size and other configuration data for a node group in a format accepted by cloud provider."+
 		"Can be used multiple times. Format: <min>:<max>:<other...>")

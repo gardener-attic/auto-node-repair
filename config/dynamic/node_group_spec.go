@@ -33,8 +33,8 @@ type NodeGroupSpec struct {
 	MinSize int `json:"minSize"`
 	// Max size of the autoscaling target
 	MaxSize int `json:"maxSize"`
-
-	supportScaleToZero bool
+	// Specifies whether this node group can scale to zero nodes.
+	SupportScaleToZero bool
 }
 
 // SpecFromString parses a node group spec represented in the form of `<minSize>:<maxSize>:<name>` and produces a node group spec object
@@ -44,7 +44,7 @@ func SpecFromString(value string, supportScaleToZero bool) (*NodeGroupSpec, erro
 		return nil, fmt.Errorf("wrong nodes configuration: %s", value)
 	}
 
-	spec := NodeGroupSpec{supportScaleToZero: supportScaleToZero}
+	spec := NodeGroupSpec{SupportScaleToZero: supportScaleToZero}
 	if size, err := strconv.Atoi(tokens[0]); err == nil {
 
 		spec.MinSize = size
@@ -69,7 +69,7 @@ func SpecFromString(value string, supportScaleToZero bool) (*NodeGroupSpec, erro
 
 // Validate produces an error if there's an invalid field in the node group spec
 func (s NodeGroupSpec) Validate() error {
-	if s.supportScaleToZero {
+	if s.SupportScaleToZero {
 		if s.MinSize < 0 {
 			return fmt.Errorf("min size must be >= 0")
 		}

@@ -76,7 +76,7 @@ type AutorepairingOptions struct {
 	// MinMemoryTotal sets the maximum memory (in megabytes) in the whole cluster
 	MinMemoryTotal int64
 	// NodeGroupAutoDiscovery represents one or more definition(s) of node group auto-discovery
-	NodeGroupAutoDiscovery string
+	NodeGroupAutoDiscovery []string
 	// UnregisteredNodeRemovalTime represents how long CA waits before removing nodes that are not registered in Kubernetes")
 	UnregisteredNodeRemovalTime time.Duration
 	// EstimatorName is the estimator used to estimate the number of needed nodes in scale up.
@@ -140,9 +140,11 @@ func NewAutorepairContext(options AutorepairingOptions,
 
 	cloudProviderBuilder := builder.NewCloudProviderBuilder(options.CloudProviderName, options.CloudConfig, options.ClusterName)
 	cloudProvider := cloudProviderBuilder.Build(cloudprovider.NodeGroupDiscoveryOptions{
-		NodeGroupSpecs:             options.NodeGroups,
-		NodeGroupAutoDiscoverySpec: options.NodeGroupAutoDiscovery,
-	})
+		NodeGroupSpecs:              options.NodeGroups,
+		NodeGroupAutoDiscoverySpecs: options.NodeGroupAutoDiscovery},
+		cloudprovider.NewResourceLimiter(
+			map[string]int64{cloudprovider.ResourceNameCores: int64(options.MinCoresTotal), cloudprovider.ResourceNameMemory: options.MinMemoryTotal},
+			map[string]int64{cloudprovider.ResourceNameCores: options.MaxCoresTotal, cloudprovider.ResourceNameMemory: options.MaxMemoryTotal}))
 	// expanderStrategy, err := factory.ExpanderStrategyFromString(options.ExpanderName,
 	// 	cloudProvider, listerRegistry.AllNodeLister())
 	// if err != nil {
@@ -156,14 +158,14 @@ func NewAutorepairContext(options AutorepairingOptions,
 	clusterStateRegistry := clusterstate.NewClusterStateRegistry(cloudProvider, clusterStateConfig, logEventRecorder)
 
 	autorepairingContext := AutorepairingContext{
-		AutorepairingOptions:   options,
+		AutorepairingOptions: options,
 		CloudProvider:        cloudProvider,
 		ClusterStateRegistry: clusterStateRegistry,
 		ClientSet:            kubeClient,
 		Recorder:             kubeEventRecorder,
 		//PredicateChecker:     predicateChecker,
 		//ExpanderStrategy:     expanderStrategy,
-		LogRecorder:          logEventRecorder,
+		LogRecorder: logEventRecorder,
 	}
 
 	return &autorepairingContext, nil

@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  name = "github.com/Azure/azure-sdk-for-go"
+  packages = ["services/compute/mgmt/2018-04-01/compute","services/containerservice/mgmt/2017-09-30/containerservice","services/network/mgmt/2018-05-01/network","services/resources/mgmt/2018-02-01/resources","services/storage/mgmt/2018-02-01/storage","storage","version"]
+  revision = "7971189ecf5a584b9211f2527737f94bb979644e"
+  version = "v17.4.0"
+
+[[projects]]
+  name = "github.com/Azure/go-autorest"
+  packages = ["autorest","autorest/adal","autorest/azure","autorest/date","autorest/to","autorest/validation"]
+  revision = "1f7cd6cfe0adea687ad44a512dfe76140f804318"
+  version = "v10.12.0"
+
+[[projects]]
   name = "github.com/PuerkitoBio/purell"
   packages = ["."]
   revision = "0bcb03f4b4d0a9428594752bd2a3b9aa0a9d4bd4"
@@ -198,6 +210,12 @@
   revision = "32fa128f234d041f196a9f3e0fea5ac9772c08e1"
 
 [[projects]]
+  name = "github.com/marstr/guid"
+  packages = ["."]
+  revision = "8bd9a64bf37eb297b492a4101fb28e80ac0b290f"
+  version = "v1.1.0"
+
+[[projects]]
   name = "github.com/matttproud/golang_protobuf_extensions"
   packages = ["pbutil"]
   revision = "3247c84500bff8d9fb6d579d800f20b3e091582c"
@@ -252,6 +270,12 @@
   revision = "a6e9df898b1336106c743392c48ee0b71f5c4efa"
 
 [[projects]]
+  name = "github.com/satori/go.uuid"
+  packages = ["."]
+  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
+  version = "v1.2.0"
+
+[[projects]]
   name = "github.com/spf13/pflag"
   packages = ["."]
   revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
@@ -272,7 +296,7 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["ssh/terminal"]
+  packages = ["pkcs12","pkcs12/internal/rc2","ssh/terminal"]
   revision = "94eea52f7b742c7cbe0b03b22f0c4c8631ece122"
 
 [[projects]]
@@ -344,7 +368,7 @@
 [[projects]]
   branch = "master"
   name = "k8s.io/autoscaler"
-  packages = ["cluster-autoscaler/cloudprovider","cluster-autoscaler/utils/errors"]
+  packages = ["cluster-autoscaler/utils/gpu"]
   revision = "6b2d771ccd7fcebd1d20f3e05c4a06ec7ab7c976"
 
 [[projects]]
@@ -379,6 +403,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "15c925bfb3e5fca84350751356ea64a4abb3fbe3dd21d50c271e8ca950caadc8"
+  inputs-digest = "96db0a0b0d2935eaff12ea537a034c2a8929e91ae567e68f93cd91328c85521b"
   solver-name = "gps-cdcl"
   solver-version = 1
