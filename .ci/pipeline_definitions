@@ -32,3 +32,5 @@ auto-node-repair:
           preprocess: 'finalise'
         release:
           nextversion: 'bump_minor'
+        component_descriptor:
+          component_name: 'github.com/gardener/auto-node-repair'
