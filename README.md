@@ -2,6 +2,9 @@
 * Kubernetes controller to repair nodes which are `NotReady` by replacing them with new fresh nodes. This is done by manipulating `AutoScalingGroups` to repair the nodes.
 * Currently supports only AWS cloud provider.
 
+## Archived component no longer maintained
+* This component is not used by [gardener](https://github.com/gardener) anymore and no longer maintained. It was archived in the [gardener-attic](https://github.com/gardener-attic).
+
 ### How does it work ?
 * Control loop for each Auto Scaling Group configured for a shoot cluster :
 	* Identify `Nodes` which are `NotReady` since configurable amount of time (~10 minutes).
