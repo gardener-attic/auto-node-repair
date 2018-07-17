@@ -1,1 +1,1 @@
-Please refer to the [Gardener contributor guide](https://github.com/gardener/documentation/blob/master/CONTRIBUTING.md)
+This component is not used by gardener anymore and no longer maintained.
